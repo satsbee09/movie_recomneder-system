@@ -1,4 +1,4 @@
-altair==5.5.0
+altair
 anyio==4.10.0
 argon2-cffi==25.1.0
 argon2-cffi-bindings==25.1.0
@@ -23,7 +23,8 @@ decorator==5.2.1
 defusedxml==0.7.1
 executing==2.2.1
 fastjsonschema==2.21.2
-Flask==3.1.0
+Flask
+fastapi
 fqdn==1.5.1
 gitdb==4.0.12
 GitPython==3.1.45
@@ -64,10 +65,10 @@ nest-asyncio==1.6.0
 nltk==3.9.1
 notebook==7.4.5
 notebook_shim==0.2.4
-numpy==2.1.2
+numpy
 opencv-python==4.10.0.84
 packaging==25.0
-pandas==2.3.2
+pandas
 pandocfilters==1.5.1
 parso==0.8.5
 pillow==11.3.0
@@ -88,7 +89,7 @@ python-dateutil==2.9.0.post0
 python-json-logger==3.3.0
 pyttsx3==2.98
 pytz==2025.2
-uvicorn==0.23.2
-streamlit==1.30.0
+uvicorn
+streamlit
 
 
