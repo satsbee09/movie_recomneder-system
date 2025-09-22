@@ -1,32 +1,49 @@
 import streamlit as st
 import pickle
+import requests
+import os
 
-# Load the pickled files
-movies = pickle.load(open('movies.pkl', "rb"))
-similarity = pickle.load(open('similarity.pkl', 'rb'))
 
-# Prepare movie titles for dropdown
-movies_list = movies['title'].values
 
-# Recommend function
+# ---------------- Fetch poster from TMDB ----------------
+def fetch_poster(movie_id):
+    url = f"https://api.themoviedb.org/3/movie/{movie_id}?api_key=5c50a6bde501df1cb4c462f7187628cd&language=en-US"
+    response = requests.get(url)
+    data = response.json()
+    return "https://image.tmdb.org/t/p/w500/" + data['poster_path']
+
+# ---------------- Recommendation function ----------------
 def recommend(movie):
     movie_index = movies[movies['title'] == movie].index[0]
     distances = similarity[movie_index]
-    movies_list_idx = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
-    
-    recommended_movies = [movies.iloc[i[0]].title for i in movies_list_idx]
-    return recommended_movies
+    movie_list = sorted(list(enumerate(distances)), reverse=True, key=lambda x: x[1])[1:6]
 
-# Streamlit UI
-st.title('🎬 Movie Recommender System')
+    recommended_movies = []
+    recommended_posters = []
 
-selected_movie = st.selectbox(
-    "Select a movie:",
-    movies_list
-)
+    for i in movie_list:
+        movie_id = movies.iloc[i[0]].movie_id
+        recommended_movies.append(movies.iloc[i[0]].title)
+        recommended_posters.append(fetch_poster(movie_id))
+
+    return recommended_movies, recommended_posters
+
+
+# ---------------- Load Pickle Files ----------------
+movies = pickle.load(open("movies.pkl", "rb"))
+similarity = pickle.load(open("similarity.pkl", "rb"))
+
+# ---------------- Streamlit UI ----------------
+st.title("🎬 Movie Recommender System")
+st.write("Get similar movie suggestions with posters using TMDB API")
+
+selected_movie = st.selectbox("Select a movie:", movies['title'].values)
 
 if st.button("Recommend"):
-    recommendations = recommend(selected_movie)
-    st.write(f"{selected_movie}:")
-    for movie in recommendations:
-        st.write('*', movie)
+    names, posters = recommend(selected_movie)
+
+    cols = st.columns(5)  # 5 recommendations side by side
+    for col, name, poster in zip(cols, names, posters):
+        with col:
+            st.text(name)
+            st.image(poster)
