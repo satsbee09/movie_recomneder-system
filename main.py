@@ -2,6 +2,14 @@ import streamlit as st
 import pickle
 import requests
 import os
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+def read_root():
+    return {"message": "Hello from Movie Recommender"}
+
 
 
 
