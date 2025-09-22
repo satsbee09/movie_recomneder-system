@@ -82,7 +82,6 @@ pycparser==2.23
 pydeck==0.9.1
 Pygments==2.19.2
 pyjokes==0.8.3
-pypiwin32==223
 pypng==0.20220715.0
 PyQRCode==1.2.1
 python-dateutil==2.9.0.post0
